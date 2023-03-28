@@ -19,7 +19,7 @@ namespace login
             var very = verify.Text;
             int i = 3;
             OpInformation op = new OpInformation(account);
-            if (true/*op.ComparePassWord(password)&&(very==uiVerificationCode1.Code)*/)
+            if (op.ComparePassWord(password)&&(very==uiVerificationCode1.Code))
             {
                 transferpass.account=account;
                 main.Form1 form1 = new main.Form1();

@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Npgsql" Version="7.0.2" />
+    <PackageReference Include="SunnyUI" Version="3.3.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="opinform">
+      <HintPath>..\..\Operation\opinform\bin\Debug\net6.0\opinform.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

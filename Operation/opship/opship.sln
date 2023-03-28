@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "opship", "opship.csproj", "{E1EB7E27-F3A7-49D7-BC8C-F6253AC35677}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E1EB7E27-F3A7-49D7-BC8C-F6253AC35677}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1EB7E27-F3A7-49D7-BC8C-F6253AC35677}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1EB7E27-F3A7-49D7-BC8C-F6253AC35677}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1EB7E27-F3A7-49D7-BC8C-F6253AC35677}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0A15092C-D471-4D0A-9E44-E698274EA3B5}
+	EndGlobalSection
+EndGlobal

@@ -16,6 +16,12 @@ namespace SuperTelegram.Op.Group
 
         }
 
+		public List<int> AllMember()
+        {
+			DbGroup db = new DbGroup(GroupNumber);
+			return db.GetAllMember();
+        }
+
 		public void CreateGroup(int member,string groupname)//创建群组，写入名称
         {
 			DbGroup db = new DbGroup(GroupNumber);
@@ -40,6 +46,7 @@ namespace SuperTelegram.Op.Group
 			DbGroup db = new DbGroup(GroupNumber);
 			db.UpdateGroupName(name);
 		}
+
 		public void SetUpDetect()//设置是否可以被查找
         {
 
@@ -51,6 +58,18 @@ namespace SuperTelegram.Op.Group
 			return db.FindAMember(member);
 		}
 
+		public bool IsCreated(int myacc)
+        {
+			DbGroup db = new DbGroup(GroupNumber);
+			if (myacc == db.GetCreated())
+            {
+				return true;
+            }
+			else
+            {
+				return false;
+            }
+        }
 
 		public int GetCreted()
         {

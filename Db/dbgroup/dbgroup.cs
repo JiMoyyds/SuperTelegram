@@ -1,5 +1,7 @@
 ﻿using Npgsql;
 using System;
+using DbManaged;
+using fsharper;
 
 namespace SuperTelegram.Db.Group
 {
@@ -153,6 +155,30 @@ namespace SuperTelegram.Db.Group
 			{
 				return null;
 			}
+		}
+
+		public List<int>? GetAllMember()
+        {
+			var con = new NpgsqlConnection(connString);
+			con.Open();
+			var sql = string.Format("select a,b,c from telegram.group where groupnumber={0}", GroupNumber);
+			var cmd = new NpgsqlCommand(sql, con);
+			var read = cmd.ExecuteReader();
+			read.Read();
+			List<int> get()
+            {
+                var list = new List<int>();
+				for(int i = 0; i < 3; i++)
+                {
+					if (read[i] != DBNull.Value)
+						list.Add((int)read[i]);
+				}
+                return list.Count == 0 ? null : list;
+            }
+
+            var r = get();
+            con.Close();
+			return r;
 		}
 
 		public List<int> FindAMember(int people)

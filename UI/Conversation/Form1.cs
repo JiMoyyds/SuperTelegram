@@ -35,6 +35,8 @@ namespace Conversation
 
             pictureBox3.DoubleClick+=new EventHandler(pictureBox3_DoubleClick);
 
+            CreateFile();
+
             mark = (fmark + mmark) / 2;
             SAR sar = new SAR(mark);
             if (sar.IsCreate())
@@ -75,8 +77,48 @@ namespace Conversation
                             flowLayoutPanel1.Controls.Add(panel);
                         }));
                     }
+
+                    //存聊天记录
+                    string timeNow = System.DateTime.Now.ToString("F");
+                    string filename = @"F:\SuperTelegram\" + myacc.ToString() + @"\" + friendacc.ToString() + ".txt";
+                    System.IO.File.AppendAllText(filename, timeNow + "\n");
+                    System.IO.File.AppendAllText(filename, "好友：" + content + "\n\n");
                 }
                 Thread.Sleep(200);
+            }
+        }
+
+        private void CreateFile()
+        {
+            //存聊天记录
+            //存入文件
+            string path = @"F:\SuperTelegram\" + myacc.ToString();
+            //判断文件夹是否存在
+            if (!Directory.Exists(path))
+            {
+                //创建文件夹
+                try
+                {
+                    Directory.CreateDirectory(path);
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+
+            //判定文件存不存在
+            string filename = @"F:\SuperTelegram\" + myacc.ToString() + @"\" + friendacc.ToString() + ".txt";
+            if (!File.Exists(filename))
+            {
+                try
+                {
+                    File.Create(filename).Close();
+                }
+                catch (Exception e)
+                {
+
+                }
             }
         }
 
@@ -95,9 +137,15 @@ namespace Conversation
             Panel panel = new Panel();
             panel.Controls.Add(label);
             label.Dock = DockStyle.Right;
-            panel.Size = new Size(555, 25);
+            label.AutoSize = false;
+            panel.Size = new Size(530, 25);
             flowLayoutPanel1.Controls.Add(panel);
             sar.Send(content);
+
+            string timeNow = System.DateTime.Now.ToString("F");
+            string filename = @"F:\SuperTelegram\" +myacc.ToString()+ @"\"+friendacc.ToString()+".txt";
+            System.IO.File.AppendAllText(filename, timeNow+ "\n");
+            System.IO.File.AppendAllText(filename,"我："+content+"\n\n");
         }
 
         private void pictureBox3_Click(object sender, EventArgs e)
@@ -126,6 +174,11 @@ namespace Conversation
         {
             SAR sar = new SAR(mark);
             sar.Send("");
+        }
+
+        private void uiButton1_Click_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

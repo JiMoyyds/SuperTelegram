@@ -65,6 +65,16 @@ namespace SuperTelegram.Db.SAR
             con.Close();
         }
 
+        public void SendFile(string file)
+        {
+            var con = new NpgsqlConnection(connString);
+            con.Open();
+            var sql = string.Format("update telegram.fchat set file='{0}' where mark={1}", file, Mark);
+            var cmd = new NpgsqlCommand(sql, con);
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }
+
         public string Receive()
         {
             var con = new NpgsqlConnection(connString);
@@ -85,7 +95,7 @@ namespace SuperTelegram.Db.SAR
             }
             else
             {
-                return null;
+                return "";
             }
         }
 
@@ -94,6 +104,30 @@ namespace SuperTelegram.Db.SAR
             var con = new NpgsqlConnection(connString);
             con.Open();
             var sql = string.Format("select url from telegram.fchat where mark={0}", Mark);
+            var cmd = new NpgsqlCommand(sql, con);
+            var read = cmd.ExecuteReader();
+            if (read.Read())
+            {
+                try
+                {
+                    return read[0].ToString();
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public string ReceiveFile()
+        {
+            var con = new NpgsqlConnection(connString);
+            con.Open();
+            var sql = string.Format("select file from telegram.fchat where mark={0}", Mark);
             var cmd = new NpgsqlCommand(sql, con);
             var read = cmd.ExecuteReader();
             if (read.Read())

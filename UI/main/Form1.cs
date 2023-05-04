@@ -7,6 +7,8 @@ using ToAdd;
 using AddFriend;
 using Conversation;
 using ToConversation;
+using GroupConversation;
+using ToGroup;
 
 namespace main
 {
@@ -89,14 +91,15 @@ namespace main
                 gpanel.Controls.Add(labelacc);
                 flowLayoutPanel1.Controls.Add(gpanel);
 
+                int nowGroupNumber = groupme[i];
+
                 void GPanel_Click(object sender, EventArgs e)
                 {
-                    ToConversation.Class1.myacc = account;
-                    ToConversation.Class1.friendacc = groupme[i];
-
+                    ToGroup.Class1.groupacc = nowGroupNumber;
+                    ToGroup.Class1.myacc = account;
 
                     //这个地方是群组聊天界面进入的地方，现在的Form1是个人的，需要修改
-                    Conversation.Form1 form = new Conversation.Form1();
+                    GroupConversation.Form1 form = new GroupConversation.Form1(); ;
                     form.Show();
                 }
 

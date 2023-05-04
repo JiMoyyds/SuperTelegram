@@ -75,6 +75,7 @@
             this.uiButton1.Style = Sunny.UI.UIStyle.Custom;
             this.uiButton1.TabIndex = 4;
             this.uiButton1.Text = "关  闭";
+            this.uiButton1.Click += new System.EventHandler(this.uiButton1_Click_1);
             // 
             // pictureBox1
             // 
@@ -165,6 +166,7 @@
             this.Controls.Add(this.sendmessage);
             this.Controls.Add(this.sure);
             this.Name = "Form1";
+            this.Text = "个人";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();

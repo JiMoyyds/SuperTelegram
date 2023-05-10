@@ -5,6 +5,9 @@ using Tofriend;
 using friendinform;
 using SuperTelegram.Db.SAR;
 using System.Threading;
+using System.Diagnostics;
+using System.IO;
+using System;
 
 namespace Conversation
 {
@@ -14,6 +17,7 @@ namespace Conversation
         public int friendacc;
         public int mark;
         public string lastContent="";
+        public string lastfile = "1";
 
         public Form1()
         {
@@ -73,7 +77,6 @@ namespace Conversation
                     {
                         this.Invoke(new Action(() =>
                         {
-
                             flowLayoutPanel1.Controls.Add(panel);
                         }));
                     }
@@ -83,6 +86,66 @@ namespace Conversation
                     string filename = @"F:\SuperTelegram\" + myacc.ToString() + @"\" + friendacc.ToString() + ".txt";
                     System.IO.File.AppendAllText(filename, timeNow + "\n");
                     System.IO.File.AppendAllText(filename, "好友：" + content + "\n\n");
+
+                    }
+
+                //现在文件time
+                //现在文件time
+                //现在文件time
+                string File = sar.ReceiveFile();
+                if (File != lastfile)
+                {
+                    lastfile = File;
+
+                    PictureBox pictureBox = new PictureBox();
+                    pictureBox.Image = Image.FromFile(@"F:\SuperTelegram\Photo\folder.png");
+                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                    pictureBox.Size = new Size(150, 150);
+                    pictureBox.Dock = DockStyle.Left;
+
+                    Label label1 = new Label();
+                    label1.Text = lastfile;
+
+                    Panel panel1 = new Panel();
+                    panel1.Controls.Add(pictureBox);
+                    label1.Dock = DockStyle.Left;
+                    label1.Location = new Point(20, 170);
+                    panel1.Controls.Add(label1);
+                    panel1.Size = new Size(530, 200);
+
+                    if (this.IsHandleCreated)
+                    {
+                        this.Invoke(new Action(() =>
+                        {
+                            flowLayoutPanel1.Controls.Add(panel1);
+                        }));
+                    }
+
+                    string hexString = sar.ReceivePhoto();
+                    //读出hexString在用户端转为新文件
+                    byte[] data = new byte[hexString.Length / 2];
+                    for (int i = 0; i < data.Length; i++)
+                    {
+                        data[i] = Convert.ToByte(hexString.Substring(i * 2, 2), 16);
+                    }
+
+                    string filename = lastfile.Substring(0, File.LastIndexOf("."));
+                    string style = lastfile.Substring(lastfile.LastIndexOf("."), lastfile.Length - lastfile.LastIndexOf("."));
+
+                    // 从二进制数据中恢复原始文件
+                    string restoredFilePath = @"F:\SuperTelegram\" + myacc.ToString() + @"\Temp\" + filename + style;
+                    System.IO.File.WriteAllBytes(restoredFilePath, data);
+
+                    void PictureBox_Click(object sender, EventArgs e)
+                    {
+                        ProcessStartInfo processStartInfo = new ProcessStartInfo(restoredFilePath);
+                        Process process = new Process();
+                        process.StartInfo = processStartInfo;
+                        process.StartInfo.UseShellExecute = true;
+                        process.Start();
+                    }
+                    pictureBox.Click += new System.EventHandler(PictureBox_Click);
+
                 }
                 Thread.Sleep(200);
             }
@@ -114,6 +177,37 @@ namespace Conversation
                 try
                 {
                     File.Create(filename).Close();
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+
+
+            string patht = @"F:\SuperTelegram\" + myacc.ToString()+@"\Temp";
+            //判断文件夹是否存在
+            if (!Directory.Exists(patht))
+            {
+                //创建文件夹
+                try
+                {
+                    Directory.CreateDirectory(patht);
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+
+            string pathf = @"F:\SuperTelegram\" + friendacc.ToString() + @"\Temp";
+            //判断文件夹是否存在
+            if (!Directory.Exists(pathf))
+            {
+                //创建文件夹
+                try
+                {
+                    Directory.CreateDirectory(pathf);
                 }
                 catch (Exception e)
                 {
@@ -174,11 +268,66 @@ namespace Conversation
         {
             SAR sar = new SAR(mark);
             sar.Send("");
+            sar.SendFile("1");
         }
 
         private void uiButton1_Click_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void pictureBox4_Click(object sender, EventArgs e)
+        {
+            SAR sar = new SAR(mark);
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Multiselect = true;//该值确定是否可以选择多个文件
+            dialog.Title = "请选择文件夹";
+            dialog.Filter = "文件(*.jpg;*.jpeg;*.gif;*.png;*.doc;*.pdf;*.docx;*.txt;*.xls)|*.jpg;*.jpeg;*.gif;*.png;*.doc;*.pdf;*.docx;*.txt;*.xls";
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                string file = dialog.FileName;
+                string style = file.Substring(file.LastIndexOf(@"\") + 1,file.Length-1-file.LastIndexOf(@"\"));
+                lastfile = style;
+                
+                PictureBox pictureBox = new PictureBox();
+                pictureBox.Image = Image.FromFile(@"F:\SuperTelegram\Photo\folder.png");
+                pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                pictureBox.Size = new Size(150, 150);
+                pictureBox.Dock = DockStyle.Right;
+
+                Label label = new Label();
+                label.Text = style;
+                label.Dock = DockStyle.Right;
+                label.AutoSize = false;
+                label.Location = new Point(500, 1000);
+
+                Panel panel = new Panel();
+                panel.Controls.Add(pictureBox);
+                panel.Controls.Add(label);
+                panel.Size = new Size(530, 200);
+                flowLayoutPanel1.Controls.Add(panel);
+
+                void PictureBox_Click(object sender, EventArgs e)
+                {
+                    ProcessStartInfo processStartInfo = new ProcessStartInfo(file);
+                    Process process = new Process();
+                    process.StartInfo = processStartInfo;
+                    process.StartInfo.UseShellExecute = true;
+                    process.Start();
+                }
+
+                pictureBox.Click += new System.EventHandler(PictureBox_Click);
+
+                // 读取文件并将其转换为二进制数据
+                byte[] binaryData = File.ReadAllBytes(file);
+
+                //将hexString存入数据库
+                string hexString = BitConverter.ToString(binaryData).Replace("-", "");
+
+                sar.SendPhoto(hexString);
+                sar.SendFile(style);
+
+            }
         }
     }
 }

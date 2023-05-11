@@ -80,6 +80,10 @@ namespace Conversation
                             flowLayoutPanel1.Controls.Add(panel);
                         }));
                     }
+                    else
+                    {
+                        flowLayoutPanel1 = new FlowLayoutPanel();
+                    }
 
                     //´æÁÄÌì¼ÇÂ¼
                     string timeNow = System.DateTime.Now.ToString("F");

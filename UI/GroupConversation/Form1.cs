@@ -13,7 +13,7 @@ namespace GroupConversation
     {
         public int myacc;
         public int groupacc;
-        public string lastContent = "";
+        public string lastContent = "a:";
         public string lastfile = "1";
         public List<int> number = new List<int>();
 
@@ -102,6 +102,7 @@ namespace GroupConversation
             {
                 sar.Create();
             }
+            sar.Send("a:");
 
             CheckForIllegalCrossThreadCalls = false;
 
@@ -120,46 +121,57 @@ namespace GroupConversation
                 {
                     lastContent = content;
 
-                    string str = content.Substring(content.IndexOf(":") + 1, content.Length - content.IndexOf(":") - 1);
-                    string number = content.Substring(0, content.IndexOf(":"));
-
-                    Label label = new Label();
-                    label.Text = str;
-                    label.Font = new Font(label.Font.FontFamily, 10);
-                    label.BackColor = Color.White;
-                    label.Location = new Point(5, 50);
-
-                    OpInformation opi = new OpInformation(Convert.ToInt32(number));
-                    PictureBox picture = new PictureBox();
-                    picture.Image = Image.FromFile(opi.GetPhoto());
-                    picture.Size = new Size(40, 40);
-                    picture.Location = new Point(5, 5);
-                    picture.SizeMode = PictureBoxSizeMode.Zoom;
-
-                    Label label2 = new Label();
-                    label2.Text = number;
-                    label2.Location = new Point(50, 5);
-
-                    Panel panel = new Panel();
-                    panel.Controls.Add(picture);
-                    panel.Controls.Add(label2);
-                    panel.Controls.Add(label);
-                    panel.Size = new Size(530, 90);
-
-                    if (this.IsHandleCreated)
+                    if (content == "a:")
                     {
-                        this.Invoke(new Action(() =>
-                        {
 
-                            flowLayoutPanel1.Controls.Add(panel);
-                        }));
                     }
+                    else
+                    {
+                        string str = content.Substring(content.IndexOf(":") + 1, content.Length - content.IndexOf(":") - 1);
+                        string number = content.Substring(0, content.IndexOf(":"));
 
-                    //存聊天记录
-                    string timeNow = System.DateTime.Now.ToString("F");
-                    string filename = @"F:\SuperTelegram\" + myacc.ToString() + @"\群组" + groupacc.ToString() + ".txt";
-                    System.IO.File.AppendAllText(filename, timeNow + "\n");
-                    System.IO.File.AppendAllText(filename, "好友：" + content + "\n\n");
+                        Label label = new Label();
+                        label.Text = str;
+                        label.Font = new Font(label.Font.FontFamily, 10);
+                        label.BackColor = Color.White;
+                        label.Location = new Point(5, 50);
+
+                        OpInformation opi = new OpInformation(Convert.ToInt32(number));
+                        PictureBox picture = new PictureBox();
+                        picture.Image = Image.FromFile(opi.GetPhoto());
+                        picture.Size = new Size(40, 40);
+                        picture.Location = new Point(5, 5);
+                        picture.SizeMode = PictureBoxSizeMode.Zoom;
+
+                        Label label2 = new Label();
+                        label2.Text = number;
+                        label2.Location = new Point(50, 5);
+
+                        Panel panel = new Panel();
+                        panel.Controls.Add(picture);
+                        panel.Controls.Add(label2);
+                        panel.Controls.Add(label);
+                        panel.Size = new Size(530, 90);
+
+                        if (this.IsHandleCreated)
+                        {
+                            this.Invoke(new Action(() =>
+                            {
+
+                                flowLayoutPanel1.Controls.Add(panel);
+                            }));
+                        }
+                        else
+                        {
+                            flowLayoutPanel1 = new FlowLayoutPanel();
+                        }
+
+                        //存聊天记录
+                        string timeNow = System.DateTime.Now.ToString("F");
+                        string filename = @"F:\SuperTelegram\" + myacc.ToString() + @"\群组" + groupacc.ToString() + ".txt";
+                        System.IO.File.AppendAllText(filename, timeNow + "\n");
+                        System.IO.File.AppendAllText(filename, "好友：" + content + "\n\n");
+                    }
                 }
 
                 //现在是文件time
@@ -358,7 +370,7 @@ namespace GroupConversation
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             SAR sar = new SAR(groupacc);
-            sar.Send("");
+            sar.Send("a:");
             sar.SendFile("1");
         }
 

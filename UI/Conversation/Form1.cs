@@ -18,6 +18,7 @@ namespace Conversation
         public int mark;
         public string lastContent="";
         public string lastfile = "1";
+        public int i = 0;
 
         public Form1()
         {
@@ -59,11 +60,15 @@ namespace Conversation
             while (true)
             {
                 string content = sar.Receive();
-                if (lastContent != content)
+                if (content!=""&&lastContent != content)
                 {
                     lastContent = content;
+
+                    i=Convert.ToInt32(content.Substring(content.Length-1,1));
+                    var neirong=content.Substring(0,content.Length-1);
+
                     Label label = new Label();
-                    label.Text = content;
+                    label.Text = neirong;
                     label.BackColor = Color.White;
                     label.AutoSize = true;
                     label.Font = new Font(label.Font.FontFamily, 10);
@@ -71,7 +76,7 @@ namespace Conversation
                     Panel panel = new Panel();
                     panel.Controls.Add(label);
                     label.Dock = DockStyle.Left;
-                    panel.Size = new Size(555, 25);
+                    panel.Size = new Size(530, 25);
 
                     if (this.IsHandleCreated)
                     {
@@ -89,7 +94,7 @@ namespace Conversation
                     string timeNow = System.DateTime.Now.ToString("F");
                     string filename = @"F:\SuperTelegram\" + myacc.ToString() + @"\" + friendacc.ToString() + ".txt";
                     System.IO.File.AppendAllText(filename, timeNow + "\n");
-                    System.IO.File.AppendAllText(filename, "好友：" + content + "\n\n");
+                    System.IO.File.AppendAllText(filename, "好友：" + neirong + "\n\n");
 
                     }
 
@@ -223,11 +228,11 @@ namespace Conversation
         private void uiButton1_Click(object sender, EventArgs e)
         {
             SAR sar = new SAR(mark);
-            string content = sendmessage.Text;
+            string content = sendmessage.Text + ((++i) % 10).ToString();
             sendmessage.Text = "";
             lastContent = content;
             Label label = new Label();
-            label.Text = content;
+            label.Text = content.Substring(0,content.Length-1);
             label.BackColor = Color.LightGreen;
             label.AutoSize = true;
             label.Font = new Font(label.Font.FontFamily,10);
@@ -243,7 +248,7 @@ namespace Conversation
             string timeNow = System.DateTime.Now.ToString("F");
             string filename = @"F:\SuperTelegram\" +myacc.ToString()+ @"\"+friendacc.ToString()+".txt";
             System.IO.File.AppendAllText(filename, timeNow+ "\n");
-            System.IO.File.AppendAllText(filename,"我："+content+"\n\n");
+            System.IO.File.AppendAllText(filename,"我："+label.Text+"\n\n");
         }
 
         private void pictureBox3_Click(object sender, EventArgs e)

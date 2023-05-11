@@ -15,6 +15,7 @@ namespace GroupConversation
         public int groupacc;
         public string lastContent = "a:";
         public string lastfile = "1";
+        public int i = 0;
         public List<int> number = new List<int>();
 
         public Form1()
@@ -117,7 +118,7 @@ namespace GroupConversation
             while (true)
             {
                 string content = sar.Receive();
-                if (lastContent != content)
+                if (content!=""&&lastContent != content)
                 {
                     lastContent = content;
 
@@ -128,13 +129,18 @@ namespace GroupConversation
                     else
                     {
                         string str = content.Substring(content.IndexOf(":") + 1, content.Length - content.IndexOf(":") - 1);
+
                         string number = content.Substring(0, content.IndexOf(":"));
 
+                        i = Convert.ToInt32(str.Substring(str.Length - 1, 1));
+                        string neirong = str.Substring(0, str.Length - 1);
+
                         Label label = new Label();
-                        label.Text = str;
+                        label.Text = neirong;
                         label.Font = new Font(label.Font.FontFamily, 10);
                         label.BackColor = Color.White;
                         label.Location = new Point(5, 50);
+                        label.AutoSize = true;
 
                         OpInformation opi = new OpInformation(Convert.ToInt32(number));
                         PictureBox picture = new PictureBox();
@@ -170,7 +176,7 @@ namespace GroupConversation
                         string timeNow = System.DateTime.Now.ToString("F");
                         string filename = @"F:\SuperTelegram\" + myacc.ToString() + @"\群组" + groupacc.ToString() + ".txt";
                         System.IO.File.AppendAllText(filename, timeNow + "\n");
-                        System.IO.File.AppendAllText(filename, "好友：" + content + "\n\n");
+                        System.IO.File.AppendAllText(filename, "好友：" + neirong + "\n\n");
                     }
                 }
 
@@ -241,20 +247,19 @@ namespace GroupConversation
         {
             SAR sar = new SAR(groupacc);
             string str = sendmessage.Text;
-            string content = myacc.ToString() + ":" + str;
+            string content = myacc.ToString() + ":" + str + ((++i) % 10).ToString();
             sendmessage.Text = "";
             lastContent = content;
 
             Label label = new Label();
             label.Text = str;
             label.BackColor = Color.LightGreen;
+            label.AutoSize = true;
             label.Font = new Font(label.Font.FontFamily, 10);
 
             Panel panel = new Panel();
             label.Dock = DockStyle.Right;
-            label.AutoSize = false;
             panel.Size = new Size(530, 25);
-
 
             //换行未能实现
             /*            if (label.Width > 8)
@@ -272,7 +277,7 @@ namespace GroupConversation
             string timeNow = System.DateTime.Now.ToString("F");
             string filename = @"F:\SuperTelegram\" + myacc.ToString() + @"\群组" + groupacc.ToString() + ".txt";
             System.IO.File.AppendAllText(filename, timeNow + "\n");
-            System.IO.File.AppendAllText(filename, "我：" + str + "\n\n");
+            System.IO.File.AppendAllText(filename, "我：" + label.Text + "\n\n");
         }
 
         private void CreateFile()

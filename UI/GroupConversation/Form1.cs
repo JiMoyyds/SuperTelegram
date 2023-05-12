@@ -360,9 +360,20 @@ namespace GroupConversation
                 {
                     string file = dialog.FileName;
                     pictureBox1.Image = Image.FromFile(file);
-                    opg.RevisePhoto(file);
+                    try
+                    {
+                        opg.RevisePhoto(file);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                    finally
+                    {
+
+                    }
                 }
-                pictureBox1.Image = Image.FromFile(opg.GetPhoto());
+                /*pictureBox1.Image = Image.FromFile(opg.GetPhoto());*/
             }
         }
 

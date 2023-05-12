@@ -49,6 +49,7 @@
             // uiSwitch1
             // 
             this.uiSwitch1.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.uiSwitch1.DisabledColor = System.Drawing.Color.Silver;
             this.uiSwitch1.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.uiSwitch1.Location = new System.Drawing.Point(3, 164);
             this.uiSwitch1.MinimumSize = new System.Drawing.Size(1, 1);

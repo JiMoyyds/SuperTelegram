@@ -58,7 +58,7 @@ namespace SuperTelegram.Db.Group
         {
 			var con = new NpgsqlConnection(connString);
 			con.Open();
-			var sql = string.Format("update telegram.group set groupphoto={0} where groupnumber={1}", url, GroupNumber);
+			var sql = string.Format("update telegram.group set groupphoto='{0}' where groupnumber={1}", url, GroupNumber);
 			var cmd = new NpgsqlCommand(sql, con);
 			cmd.ExecuteNonQuery();
 			con.Close();

@@ -9,6 +9,8 @@ namespace AddFriend
     public partial class Form1 : Form
     {
         public int account;
+        public bool flag = true;
+        public string photofile;
         public Form1()
         {
             InitializeComponent();
@@ -106,12 +108,23 @@ namespace AddFriend
             groupname.Visible = true;
             groupnumber.Visible = true;
             groupsure.Visible = true;
+            label1.Visible = true;
+            pictureBox2.Visible = true;
         }
 
         private void group_CheckedChanged(object sender, EventArgs e)
         {
-            groupcreat.Visible = true;
-        }
+            if(flag)
+            {
+                groupcreat.Visible = true;
+                flag = false;
+            }
+            else
+            {
+                groupcreat.Visible = false;
+                flag = true;
+            }
+        }   
 
         private void people_CheckedChanged(object sender, EventArgs e)
         {
@@ -124,12 +137,39 @@ namespace AddFriend
             string name = groupname.Text;
             OpGroup op = new OpGroup(number);
             op.CreateGroup(account, name);
+            try
+            {
+                op.RevisePhoto(photofile);
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+
+            }
             group1.Visible = false;
             group2.Visible = false;
             groupname.Visible = false;
             groupnumber.Visible = false;
             groupsure.Visible = false;
+            label1.Visible = false;
+            pictureBox2.Visible = false;
             MessageBox.Show("创建成功！");
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Multiselect = true;//该值确定是否可以选择多个文件
+            dialog.Title = "请选择文件夹";
+            dialog.Filter = "图像文件(*.jpg;*.jpg;*.jpeg;*.gif;*.png)|*.jpg;*.jpeg;*.gif;*.png";
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                string file = dialog.FileName;
+                photofile = file;
+            }
         }
     }
 }

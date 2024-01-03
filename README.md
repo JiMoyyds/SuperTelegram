@@ -42,6 +42,8 @@
 
 没有技术，纯纯的全是感情
 
+放在f盘下，项目中路径名是基于f盘下运行的
+
 ## 使用工具
 
 Visual Studio，DataGrip，PostgreSQL
